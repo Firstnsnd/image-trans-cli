@@ -1,0 +1,4 @@
+images:
+  - nginx:latest
+  - redis:alpine
+target: registry.test.com
