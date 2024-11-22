@@ -1,5 +1,5 @@
 # 定义变量
-BINARY_NAME=image-trans
+BINARY_NAME=image-trans-cli
 GO=go
 
 # 默认目标
