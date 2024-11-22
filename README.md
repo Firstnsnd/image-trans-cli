@@ -15,7 +15,7 @@
 2. Clone this repository:
 
    ```bash
-   git clone https://github.com/yourusername/image-trans-cli.git
+   git clone https://github.com/Firstnsnd/image-trans-cli.git
    cd image-trans-cli
    ```
 3. Build the project:
@@ -33,8 +33,8 @@
    Create a YAML configuration file (e.g., config.yaml) with the following format:
    ```yaml
    images:
-      - docker.vaniot.net/nginx:latest
-      - docker.vaniot.net/redis:6
+      - nginx:latest
+      - redis:6
    target: my-registry.com
    ```
 ### Confirm Permissions
