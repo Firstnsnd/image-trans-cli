@@ -1,3 +1,6 @@
+mirror: docker.m.daocloud.io
+compress: true
+output: ./images
 images:
   - nginx:latest
   - redis:alpine
