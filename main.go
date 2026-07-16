@@ -27,6 +27,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// version 编译时通过 -ldflags "-X main.version=v2.0.0" 注入，默认 dev
+var version = "dev"
+
 // Config 定义了配置文件的结构
 type Config struct {
 	Images   []string `yaml:"images"`
@@ -175,7 +178,7 @@ Configuration file (config.yaml) format:
 
 	  # Process images using configuration file in different path
 	    image-trans-cli --config /path/to/config.yaml`,
-		Version: "v1.0.0",
+		Version: version,
 
 		PreRun: func(cmd *cobra.Command, args []string) {
 			fmt.Println("Starting image processing...")

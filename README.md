@@ -1,6 +1,6 @@
-# Image Transfer CLI Tool
+# image-trans-cli
 
-`image-trans-cli` is a command-line tool for transferring container images between OCI-compatible registries. **No Docker daemon or CLI required** — it communicates directly with registries over HTTPS.
+> Zero-dependency CLI to transfer, mirror, and compress OCI/Docker container images across registries — no Docker daemon needed.
 
 ## Features
 
