@@ -9,22 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - goos: linux
-            goarch: amd64
-          - goos: linux
-            goarch: arm64
-          - goos: darwin
-            goarch: amd64
-          - goos: darwin
-            goarch: arm64
-          - goos: windows
-            goarch: amd64
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,35 +20,24 @@ jobs:
         with:
           go-version: '1.22'
 
-      - name: Build
+      - name: Build all platforms
         env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
+          VERSION: ${{ github.ref_name }}
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
-          ext=""
-          if [ "$GOOS" = "windows" ]; then ext=".exe"; fi
-          go build -ldflags "-X main.version=${VERSION}" \
-            -o "image-trans-cli-${GOOS}-${GOARCH}${ext}"
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: image-trans-cli-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: image-trans-cli-*
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          merge-multiple: true
+          mkdir -p dist
+          for pair in "linux amd64" "linux arm64" "darwin amd64" "darwin arm64" "windows amd64"; do
+            set -- $pair
+            GOOS=$1 GOARCH=$2
+            ext=""
+            [ "$GOOS" = "windows" ] && ext=".exe"
+            echo "Building ${GOOS}/${GOARCH}..."
+            go build -ldflags "-X main.version=${VERSION}" -o "dist/image-trans-cli-${GOOS}-${GOARCH}${ext}" .
+          done
+          echo "Done. Artifacts:"
+          ls -lh dist/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/*
+          files: dist/*
           generate_release_notes: true
